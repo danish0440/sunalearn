@@ -53,7 +53,7 @@ export const useInvalidatePipedreamQueries = () => {
   };
 }; 
 
-export const usePipedreamApps = (after?: string, search?: string) => {
+export const usePipedreamApps = (after?: string, search?: string, options?: { enabled?: boolean }) => {
   return useQuery({
     queryKey: ['pipedream', 'apps', after, search],
     queryFn: async (): Promise<PipedreamAppResponse> => {
@@ -61,12 +61,13 @@ export const usePipedreamApps = (after?: string, search?: string) => {
       console.log('🔍 Apps:', result);
       return result;
     },
+    enabled: options?.enabled !== false,
     staleTime: 5 * 60 * 1000, 
     retry: 2,
   });
 };
 
-export const usePipedreamPopularApps = () => {
+export const usePipedreamPopularApps = (options?: { enabled?: boolean }) => {
   return useQuery({
     queryKey: pipedreamKeys.popularApps(),
     queryFn: async (): Promise<PipedreamAppResponse> => {
@@ -74,6 +75,7 @@ export const usePipedreamPopularApps = () => {
       console.log('🔍 Popular apps:', result);
       return result;
     },
+    enabled: options?.enabled !== false,
     staleTime: 30 * 60 * 1000,
     retry: 2,
   });
@@ -141,4 +143,4 @@ export const usePipedreamAppTools = (appSlug: string, options?: { enabled?: bool
     staleTime: 5 * 60 * 1000,
     retry: 2,
   });
-}; 
+};

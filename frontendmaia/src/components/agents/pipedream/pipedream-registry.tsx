@@ -22,6 +22,7 @@ import {
 } from './utils';
 import type { PipedreamRegistryProps, ConnectedApp } from './types';
 import { usePathname } from 'next/navigation';
+import { useAuth } from '@/components/AuthProvider';
 
 const AppCardSkeleton = () => (
   <div className="group relative overflow-hidden rounded-2xl border border-border bg-card transition-all">
@@ -79,8 +80,10 @@ export const PipedreamRegistry: React.FC<PipedreamRegistryProps> = ({
   const [internalSelectedAgentId, setInternalSelectedAgentId] = useState<string | undefined>(selectedAgentId);
 
   const queryClient = useQueryClient();
+  const { user, isGuestMode } = useAuth();
+  const isAuthenticated = !!user && !isGuestMode;
   
-  const { data: popularAppsData, isLoading: isLoadingPopular } = usePipedreamPopularApps();
+  const { data: popularAppsData, isLoading: isLoadingPopular } = usePipedreamPopularApps({ enabled: isAuthenticated });
   
   const shouldFetchAllApps = showAllApps || search.trim() !== '';
   const { data: allAppsData, isLoading: isLoadingAll, error, refetch } = useQuery({
@@ -89,15 +92,15 @@ export const PipedreamRegistry: React.FC<PipedreamRegistryProps> = ({
       const result = await pipedreamApi.getApps(undefined, search);
       return result;
     },
-    enabled: shouldFetchAllApps,
+    enabled: shouldFetchAllApps && isAuthenticated,
     staleTime: 5 * 60 * 1000,
     retry: 2,
   });
   
-  const { data: profiles } = usePipedreamProfiles();
+  const { data: profiles } = usePipedreamProfiles(undefined, { enabled: isAuthenticated });
   
   const currentAgentId = selectedAgentId ?? internalSelectedAgentId;
-  const { data: agent } = useAgent(currentAgentId || '');
+  const { data: agent } = useAgent(currentAgentId || '', { enabled: isAuthenticated && !!currentAgentId });
 
   React.useEffect(() => {
     setInternalSelectedAgentId(selectedAgentId);
@@ -420,4 +423,4 @@ export const PipedreamRegistry: React.FC<PipedreamRegistryProps> = ({
       )}
     </div>
   );
-}; 
+};

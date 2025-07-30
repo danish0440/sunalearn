@@ -8,10 +8,11 @@ import type {
 } from '@/components/agents/pipedream/pipedream-types';
 import { toast } from 'sonner';
 
-export const usePipedreamProfiles = (params?: { app_slug?: string; is_active?: boolean }) => {
+export const usePipedreamProfiles = (params?: { app_slug?: string; is_active?: boolean }, options?: { enabled?: boolean }) => {
   return useQuery({
     queryKey: pipedreamKeys.profiles.list(params),
     queryFn: () => pipedreamApi.getProfiles(params),
+    enabled: options?.enabled !== false,
     staleTime: 5 * 60 * 1000,
   });
 };
@@ -132,4 +133,4 @@ export const useConnectPipedreamProfile = () => {
       toast.error(error.message || 'Failed to connect profile');
     },
   });
-}; 
+};
