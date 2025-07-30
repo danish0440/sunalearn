@@ -32,6 +32,7 @@ import { Examples } from './examples';
 import { useThreadQuery } from '@/hooks/react-query/threads/use-threads';
 import { normalizeFilenameToNFC } from '@/lib/utils/unicode';
 import { KortixLogo } from '../sidebar/kortix-logo';
+import { useAuth } from '@/components/AuthProvider';
 
 const PENDING_PROMPT_KEY = 'pendingAgentPrompt';
 
@@ -47,6 +48,8 @@ export function DashboardContent() {
   const searchParams = useSearchParams();
   const isMobile = useIsMobile();
   const { setOpenMobile } = useSidebar();
+  const { user, isLoading: isAuthLoading } = useAuth();
+  const isGuestMode = !user && !isAuthLoading;
   const { data: accounts } = useAccounts();
   const personalAccount = accounts?.find((account) => account.personal_account);
   const chatInputRef = useRef<ChatInputHandles>(null);
