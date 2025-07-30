@@ -137,6 +137,7 @@ allow_origin_regex = None
 # Add local development origins
 if config.ENV_MODE == EnvMode.LOCAL:
     allowed_origins.append("http://localhost:3000")
+    allowed_origins.append("http://localhost:3010")
 
 # Add staging-specific origins
 if config.ENV_MODE == EnvMode.STAGING:

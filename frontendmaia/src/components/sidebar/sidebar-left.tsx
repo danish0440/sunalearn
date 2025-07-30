@@ -51,7 +51,7 @@ import { Badge } from '../ui/badge';
 import { cn } from '@/lib/utils';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useFeatureFlags } from '@/lib/feature-flags';
-import { useCreateNewAgent } from '@/hooks/react-query/agents/use-agents';
+
 import { Button } from '../ui/button';
 
 export function SidebarLeft({
@@ -74,8 +74,7 @@ export function SidebarLeft({
   const { flags, loading: flagsLoading } = useFeatureFlags(['custom_agents', 'agent_marketplace']);
   const customAgentsEnabled = flags.custom_agents;
   const marketplaceEnabled = flags.agent_marketplace;
-  const createNewAgentMutation = useCreateNewAgent();
-  const [showNewAgentDialog, setShowNewAgentDialog] = useState(false);
+
 
   
   useEffect(() => {
@@ -116,9 +115,7 @@ export function SidebarLeft({
   }, [state, setOpen]);
 
 
-  const handleCreateNewAgent = () => {
-    createNewAgentMutation.mutate();
-  };
+
 
   return (
     <Sidebar
@@ -208,14 +205,7 @@ export function SidebarLeft({
                           </Link>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
-                      <SidebarMenuSubItem>
-                        <SidebarMenuSubButton 
-                          onClick={() => setShowNewAgentDialog(true)}
-                          className="cursor-pointer pl-3"
-                        >
-                          <span>New Agent</span>
-                        </SidebarMenuSubButton>
-                      </SidebarMenuSubItem>
+
                     </SidebarMenuSub>
                   </CollapsibleContent>
                 </SidebarMenuItem>
@@ -256,20 +246,7 @@ export function SidebarLeft({
         <NavUserWithTeams user={user} />
       </SidebarFooter>
       <SidebarRail />
-      <AlertDialog open={showNewAgentDialog} onOpenChange={setShowNewAgentDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Create New Agent</AlertDialogTitle>
-            <AlertDialogDescription>
-              This will create a new agent with a default name and description.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleCreateNewAgent}>Create</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+
     </Sidebar>
   );
 }
