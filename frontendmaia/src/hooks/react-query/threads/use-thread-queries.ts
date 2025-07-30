@@ -15,11 +15,11 @@ export const useThreadsByProject = (projectId?: string) =>
     }
   )();
 
-export const useAllThreads = createQueryHook(
+export const useAllThreads = (options?: { enabled?: boolean }) => createQueryHook(
   threadKeys.all,
   () => getThreads(),
   {
     staleTime: 2 * 60 * 1000, 
     refetchOnWindowFocus: false,
   }
-); 
+)(options);

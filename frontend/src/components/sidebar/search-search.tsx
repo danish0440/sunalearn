@@ -15,6 +15,7 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar';
 import { useProjects, useAllThreads } from '@/hooks/react-query';
+import { useAuth } from '@/components/AuthProvider';
 import Link from 'next/link';
 
 // Thread with associated project info for display in sidebar & search
@@ -38,8 +39,9 @@ export function SidebarSearch() {
   const { state } = useSidebar();
 
   // Use React Query hooks
-  const { data: projects = [], isLoading: projectsLoading } = useProjects();
-  const { data: allThreads = [], isLoading: threadsLoading } = useAllThreads();
+  const { isAuthenticated } = useAuth();
+  const { data: projects = [], isLoading: projectsLoading } = useProjects({ enabled: isAuthenticated });
+  const { data: allThreads = [], isLoading: threadsLoading } = useAllThreads({ enabled: isAuthenticated });
   const isLoading = projectsLoading || threadsLoading;
 
   // Helper to sort threads by updated_at (most recent first)

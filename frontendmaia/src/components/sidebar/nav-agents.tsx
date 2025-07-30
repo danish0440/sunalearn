@@ -47,6 +47,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { ThreadWithProject } from '@/hooks/react-query/sidebar/use-sidebar';
 import { processThreadsWithProjects, useDeleteMultipleThreads, useDeleteThread, useProjects, useThreads } from '@/hooks/react-query/sidebar/use-sidebar';
 import { projectKeys, threadKeys } from '@/hooks/react-query/sidebar/keys';
+import { useAuth } from '@/components/AuthProvider';
 
 export function NavAgents() {
   const { isMobile, state } = useSidebar()
@@ -66,17 +67,18 @@ export function NavAgents() {
   const [deleteProgress, setDeleteProgress] = useState(0);
   const [totalToDelete, setTotalToDelete] = useState(0);
 
+  const { isAuthenticated } = useAuth();
   const {
     data: projects = [],
     isLoading: isProjectsLoading,
     error: projectsError
-  } = useProjects();
+  } = useProjects({ enabled: isAuthenticated });
 
   const {
     data: threads = [],
     isLoading: isThreadsLoading,
     error: threadsError
-  } = useThreads();
+  } = useThreads({ enabled: isAuthenticated });
 
   const { mutate: deleteThreadMutation, isPending: isDeletingSingle } = useDeleteThread();
   const {

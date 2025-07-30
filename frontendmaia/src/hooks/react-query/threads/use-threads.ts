@@ -41,7 +41,7 @@ export const useDeleteThreadMutation = () =>
 )()
 
 
-export const useThreadsForProject = (projectId: string) => {
+export const useThreadsForProject = (projectId: string, options?: { enabled?: boolean }) => {
   return createQueryHook(
     threadKeys.byProject(projectId),
     () => getThreads(projectId),
@@ -49,5 +49,5 @@ export const useThreadsForProject = (projectId: string) => {
       enabled: !!projectId,
       retry: 1,
     }
-  )();
+  )(options);
 };

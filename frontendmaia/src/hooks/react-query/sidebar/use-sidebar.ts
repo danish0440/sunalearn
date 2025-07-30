@@ -7,7 +7,7 @@ import { threadKeys } from "./keys";
 import { projectKeys } from "./keys";
 import { deleteThread } from "../threads/utils";
 
-export const useProjects = createQueryHook(
+export const useProjects = (options?: { enabled?: boolean }) => createQueryHook(
   projectKeys.lists(),
   async () => {
     const data = await getProjects();
@@ -17,9 +17,9 @@ export const useProjects = createQueryHook(
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
   }
-);
+)(options);
 
-export const useThreads = createQueryHook(
+export const useThreads = (options?: { enabled?: boolean }) => createQueryHook(
   threadKeys.lists(),
   async () => {
     const data = await getThreads();
@@ -29,7 +29,7 @@ export const useThreads = createQueryHook(
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
   }
-);
+)(options);
 
 interface DeleteThreadVariables {
   threadId: string;
