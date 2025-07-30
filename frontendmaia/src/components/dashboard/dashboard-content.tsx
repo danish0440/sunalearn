@@ -124,9 +124,11 @@ export function DashboardContent() {
     )
       return;
 
-    // Prevent submission in guest mode
+    // For guest mode, create a simple local chat experience
     if (isGuestMode) {
-      router.push('/auth?mode=signup');
+      // Store the message locally and redirect to a guest chat page
+      localStorage.setItem(PENDING_PROMPT_KEY, message);
+      router.push('/guest-chat');
       return;
     }
 
