@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Settings, ChevronRight, Bot, Presentation, FileSpreadsheet, Search, Plus, User, Check, ChevronDown } from 'lucide-react';
+import { Settings, ChevronRight, Bot, Presentation, FileSpreadsheet, Search, User, Check, ChevronDown } from 'lucide-react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import {
@@ -17,7 +17,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { useAgents, useCreateNewAgent } from '@/hooks/react-query/agents/use-agents';
+import { useAgents } from '@/hooks/react-query/agents/use-agents';
 
 import { useRouter } from 'next/navigation';
 import { cn, truncateString } from '@/lib/utils';
@@ -70,7 +70,7 @@ export const AgentSelector: React.FC<AgentSelectorProps> = ({
 
   const { data: agentsResponse, isLoading: agentsLoading } = useAgents();
   const agents = agentsResponse?.agents || [];
-  const createNewAgentMutation = useCreateNewAgent();
+
 
   const allAgents = [
     ...PREDEFINED_AGENTS.map(agent => ({
@@ -174,21 +174,7 @@ export const AgentSelector: React.FC<AgentSelectorProps> = ({
     router.push('/agents');
   };
 
-  const handleCreateAgent = useCallback(() => {
-    if (isCreatingAgent || createNewAgentMutation.isPending) {
-      return; // Prevent multiple clicks
-    }
-    
-    setIsCreatingAgent(true);
-    setIsOpen(false);
-    
-    createNewAgentMutation.mutate(undefined, {
-      onSettled: () => {
-        // Reset the debounce state after mutation completes (success or error)
-        setTimeout(() => setIsCreatingAgent(false), 1000);
-      }
-    });
-  }, [isCreatingAgent, createNewAgentMutation]);
+
 
   const renderAgentItem = (agent: any, index: number) => {
     const isSelected = agent.id === selectedAgentId;
@@ -354,23 +340,11 @@ export const AgentSelector: React.FC<AgentSelectorProps> = ({
                 Explore All Agents
               </Button>
 
-              <div className="w-px h-4 bg-border/60" />
-
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleCreateAgent}
-                disabled={isCreatingAgent || createNewAgentMutation.isPending}
-                className="text-xs flex items-center gap-2 rounded-xl hover:bg-accent/40 transition-all duration-200 text-muted-foreground hover:text-foreground px-4 py-2 disabled:opacity-50"
-              >
-                <Plus className="h-3.5 w-3.5" />
-                {isCreatingAgent || createNewAgentMutation.isPending ? 'Creating...' : 'Create Agent'}
-              </Button>
-            </div>
+              </div>
           </div>
         </DropdownMenuContent>
       </DropdownMenu>
 
     </>
   );
-}; 
+};
