@@ -112,6 +112,12 @@ export function DashboardContent() {
     )
       return;
 
+    // Prevent submission in guest mode
+    if (isGuestMode) {
+      router.push('/auth?mode=signup');
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
