@@ -161,7 +161,8 @@ export const MessageInput = forwardRef<HTMLTextAreaElement, MessageInputProps>(
 
         return (
           <div className="flex items-center gap-2">
-            {showAdvancedFeatures && !hideAgentSelection && (
+            {/* Agent selector hidden */}
+            {false && showAdvancedFeatures && !hideAgentSelection && (
               <AgentSelector
                 selectedAgentId={selectedAgentId}
                 onAgentSelect={onAgentSelect}
