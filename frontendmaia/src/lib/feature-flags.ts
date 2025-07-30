@@ -1,5 +1,6 @@
 import React from 'react';
 import { useQuery, useQueries } from '@tanstack/react-query';
+import { createClient } from '@/lib/supabase/client';
 
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || '';
 
@@ -39,11 +40,21 @@ export class FeatureFlagManager {
       if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
         return cached.value;
       }
+      
+      const supabase = createClient();
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+      };
+      
+      if (session?.access_token) {
+        headers['Authorization'] = `Bearer ${session.access_token}`;
+      }
+      
       const response = await fetch(`${API_URL}/feature-flags/${flagName}`, {
         method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers,
       });
       if (!response.ok) {
         console.warn(`Failed to fetch feature flag ${flagName}: ${response.status}`);
@@ -66,11 +77,20 @@ export class FeatureFlagManager {
   
   async getFlagDetails(flagName: string): Promise<FeatureFlag | null> {
     try {
+      const supabase = createClient();
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+      };
+      
+      if (session?.access_token) {
+        headers['Authorization'] = `Bearer ${session.access_token}`;
+      }
+      
       const response = await fetch(`${API_URL}/feature-flags/${flagName}`, {
         method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers,
       });
       
       if (!response.ok) {
@@ -92,11 +112,20 @@ export class FeatureFlagManager {
         return globalFlagsCache.flags;
       }
       
+      const supabase = createClient();
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+      };
+      
+      if (session?.access_token) {
+        headers['Authorization'] = `Bearer ${session.access_token}`;
+      }
+      
       const response = await fetch(`${API_URL}/feature-flags`, {
         method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers,
       });
       
       if (!response.ok) {
@@ -173,11 +202,20 @@ export const featureFlagKeys = {
 
 // Query functions
 const fetchFeatureFlag = async (flagName: string): Promise<boolean> => {
+  const supabase = createClient();
+  const { data: { session } } = await supabase.auth.getSession();
+  
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
+  
+  if (session?.access_token) {
+    headers['Authorization'] = `Bearer ${session.access_token}`;
+  }
+  
   const response = await fetch(`${API_URL}/feature-flags/${flagName}`, {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers,
   });
   
   if (!response.ok) {
@@ -189,11 +227,20 @@ const fetchFeatureFlag = async (flagName: string): Promise<boolean> => {
 };
 
 const fetchFeatureFlagDetails = async (flagName: string): Promise<FeatureFlag> => {
+  const supabase = createClient();
+  const { data: { session } } = await supabase.auth.getSession();
+  
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
+  
+  if (session?.access_token) {
+    headers['Authorization'] = `Bearer ${session.access_token}`;
+  }
+  
   const response = await fetch(`${API_URL}/feature-flags/${flagName}`, {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers,
   });
   
   if (!response.ok) {
@@ -205,11 +252,20 @@ const fetchFeatureFlagDetails = async (flagName: string): Promise<FeatureFlag> =
 };
 
 const fetchAllFeatureFlags = async (): Promise<Record<string, boolean>> => {
+  const supabase = createClient();
+  const { data: { session } } = await supabase.auth.getSession();
+  
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
+  
+  if (session?.access_token) {
+    headers['Authorization'] = `Bearer ${session.access_token}`;
+  }
+  
   const response = await fetch(`${API_URL}/feature-flags`, {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers,
   });
   
   if (!response.ok) {
