@@ -169,7 +169,8 @@ export function SidebarLeft({
               </span>
             </SidebarMenuButton>
           </Link>
-          {!flagsLoading && customAgentsEnabled && (
+          {/* Agents section temporarily hidden */}
+          {false && !flagsLoading && customAgentsEnabled && (
             <SidebarMenu>
               <Collapsible
                 defaultOpen={pathname?.includes('/agents')}
@@ -212,7 +213,8 @@ export function SidebarLeft({
               </Collapsible>
             </SidebarMenu>
           )}
-          {!flagsLoading && customAgentsEnabled && (
+          {/* Integrations section temporarily hidden */}
+          {false && !flagsLoading && customAgentsEnabled && (
             <Link href="/settings/credentials">
               <SidebarMenuButton className={cn({
                 'bg-accent text-accent-foreground font-medium': pathname === '/settings/credentials',
