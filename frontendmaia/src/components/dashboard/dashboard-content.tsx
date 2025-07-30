@@ -54,18 +54,23 @@ export function DashboardContent() {
   const { setOpenMobile } = useSidebar();
   const { user, isLoading: isAuthLoading } = useAuth();
   const isGuestMode = !user && !isAuthLoading;
-  const { data: accounts } = useAccounts();
+  const { data: accounts } = useAccounts({ 
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+    shouldRetryOnError: false,
+    ...(isGuestMode && { fallbackData: [] })
+  });
   const personalAccount = accounts?.find((account) => account.personal_account);
   const chatInputRef = useRef<ChatInputHandles>(null);
   const initiateAgentMutation = useInitiateAgentWithInvalidation();
   const { onOpen } = useModal();
 
-  // Fetch agents to get the selected agent's name
+  // Fetch agents to get the selected agent's name (only when authenticated)
   const { data: agentsResponse } = useAgents({
     limit: 100,
     sort_by: 'name',
     sort_order: 'asc'
-  });
+  }, { enabled: !isGuestMode });
 
   const agents = agentsResponse?.agents || [];
   const selectedAgent = selectedAgentId

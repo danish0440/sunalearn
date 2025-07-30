@@ -112,7 +112,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    // In guest mode, return a default context instead of throwing an error
+    console.warn('useAuth called outside of AuthProvider context, returning guest mode defaults');
+    return {
+      supabase: createClient(),
+      session: null,
+      user: null,
+      isLoading: false,
+      signOut: async () => {},
+    };
   }
   return context;
 };

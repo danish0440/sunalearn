@@ -28,9 +28,15 @@ export default function DashboardLayoutContent({
 }: DashboardLayoutContentProps) {
   // const [showPricingAlert, setShowPricingAlert] = useState(false)
   const [showMaintenanceAlert, setShowMaintenanceAlert] = useState(false);
-  const { data: accounts } = useAccounts();
-  const personalAccount = accounts?.find((account) => account.personal_account);
   const { user, isLoading } = useAuth();
+  const isGuestMode = !user && !isLoading;
+  const { data: accounts } = useAccounts({
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+    shouldRetryOnError: false,
+    ...(isGuestMode && { fallbackData: [] })
+  });
+  const personalAccount = accounts?.find((account) => account.personal_account);
   const router = useRouter();
   const { data: healthData, isLoading: isCheckingHealth, error: healthError } = useApiHealth();
 
@@ -42,12 +48,7 @@ export default function DashboardLayoutContent({
   // API health is now managed by useApiHealth hook
   const isApiHealthy = healthData?.status === 'ok' && !healthError;
 
-  // Check authentication status
-  useEffect(() => {
-    if (!isLoading && !user) {
-      router.push('/auth');
-    }
-  }, [user, isLoading, router]);
+  // Guest mode is now allowed - no authentication redirect needed
 
   if (maintenanceNotice.enabled) {
     const now = new Date();
