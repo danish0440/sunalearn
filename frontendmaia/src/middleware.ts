@@ -33,8 +33,8 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  // Define protected routes
-  const protectedRoutes = ['/dashboard', '/agents', '/projects', '/settings', '/invitation']
+  // Define protected routes (dashboard is now accessible to guests)
+  const protectedRoutes = ['/agents', '/projects', '/settings', '/invitation']
   const authRoutes = ['/auth', '/login', '/signup']
   
   const isProtectedRoute = protectedRoutes.some(route => 
@@ -82,4 +82,4 @@ export const config = {
      */
     '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
-} 
+}

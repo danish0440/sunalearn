@@ -32,6 +32,9 @@ import { Examples } from './examples';
 import { useThreadQuery } from '@/hooks/react-query/threads/use-threads';
 import { normalizeFilenameToNFC } from '@/lib/utils/unicode';
 import { MaiaLogo } from '../sidebar/kortix-logo';
+import { useAuth } from '@/components/AuthProvider';
+import { GuestModeBanner } from '@/components/guest/guest-mode-banner';
+import { GuestModeCard } from '@/components/guest/guest-mode-card';
 
 const PENDING_PROMPT_KEY = 'pendingAgentPrompt';
 
@@ -41,12 +44,16 @@ export function DashboardContent() {
   const [autoSubmit, setAutoSubmit] = useState(false);
   const [selectedAgentId, setSelectedAgentId] = useState<string | undefined>();
   const [initiatedThreadId, setInitiatedThreadId] = useState<string | null>(null);
+  const [showGuestBanner, setShowGuestBanner] = useState(true);
+  const [showGuestCard, setShowGuestCard] = useState(true);
   const { billingError, handleBillingError, clearBillingError } =
     useBillingError();
   const router = useRouter();
   const searchParams = useSearchParams();
   const isMobile = useIsMobile();
   const { setOpenMobile } = useSidebar();
+  const { user, isLoading: isAuthLoading } = useAuth();
+  const isGuestMode = !user && !isAuthLoading;
   const { data: accounts } = useAccounts();
   const personalAccount = accounts?.find((account) => account.personal_account);
   const chatInputRef = useRef<ChatInputHandles>(null);
@@ -185,7 +192,11 @@ export function DashboardContent() {
   return (
     <>
       <ModalProviders />
-      <div className="flex flex-col h-screen w-full">
+      {/* Guest Mode Banner */}
+      {isGuestMode && showGuestBanner && (
+        <GuestModeBanner onDismiss={() => setShowGuestBanner(false)} />
+      )}
+      <div className="flex flex-col h-screen w-full" style={{ paddingTop: isGuestMode && showGuestBanner ? '60px' : '0' }}>
         {isMobile && (
           <div className="absolute top-4 left-4 z-10">
             <Tooltip>
@@ -251,6 +262,11 @@ export function DashboardContent() {
           isOpen={!!billingError}
         />
       </div>
+      
+      {/* Guest Mode Card */}
+      {isGuestMode && showGuestCard && (
+        <GuestModeCard onDismiss={() => setShowGuestCard(false)} />
+      )}
     </>
   );
 }

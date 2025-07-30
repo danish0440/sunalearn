@@ -84,10 +84,8 @@ export default function DashboardLayoutContent({
     );
   }
 
-  // Don't render anything if not authenticated
-  if (!user) {
-    return null;
-  }
+  // Allow guest access - don't block unauthenticated users
+  // Guest mode will be handled by individual components
 
   // Show maintenance page if API is not healthy (but not during initial loading)
   if (!isCheckingHealth && !isApiHealthy) {

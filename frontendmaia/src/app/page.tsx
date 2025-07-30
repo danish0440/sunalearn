@@ -13,13 +13,9 @@ export default function RootPage() {
       const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
       
-      if (user) {
-        // User is authenticated, redirect to dashboard
-        router.replace('/dashboard');
-      } else {
-        // User is not authenticated, redirect to auth page
-        router.replace('/auth');
-      }
+      // Always redirect to dashboard - both authenticated and guest users
+      // The dashboard will handle guest mode vs authenticated mode
+      router.replace('/dashboard');
     };
 
     checkAuthAndRedirect();
