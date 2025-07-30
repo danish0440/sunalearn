@@ -32,7 +32,6 @@ import { Examples } from './examples';
 import { useThreadQuery } from '@/hooks/react-query/threads/use-threads';
 import { normalizeFilenameToNFC } from '@/lib/utils/unicode';
 import { KortixLogo } from '../sidebar/kortix-logo';
-import { useAuth } from '@/components/AuthProvider';
 
 const PENDING_PROMPT_KEY = 'pendingAgentPrompt';
 
@@ -48,8 +47,6 @@ export function DashboardContent() {
   const searchParams = useSearchParams();
   const isMobile = useIsMobile();
   const { setOpenMobile } = useSidebar();
-  const { user, isLoading: isAuthLoading } = useAuth();
-  const isGuestMode = !user && !isAuthLoading;
   const { data: accounts } = useAccounts();
   const personalAccount = accounts?.find((account) => account.personal_account);
   const chatInputRef = useRef<ChatInputHandles>(null);
@@ -109,19 +106,22 @@ export function DashboardContent() {
       enable_context_manager?: boolean;
     },
   ) => {
+    // Check if user is authenticated, if not redirect to auth page
+    if (isGuestMode || !user) {
+      // Store the message in localStorage so it can be restored after login
+      if (message.trim()) {
+        localStorage.setItem(PENDING_PROMPT_KEY, message);
+      }
+      // Redirect to auth page with return URL
+      router.push('/auth?returnUrl=' + encodeURIComponent('/dashboard'));
+      return;
+    }
+
     if (
       (!message.trim() && !chatInputRef.current?.getPendingFiles().length) ||
       isSubmitting
     )
       return;
-
-    // For guest mode, create a simple local chat experience
-    if (isGuestMode) {
-      // Store the message locally and redirect to a guest chat page
-      localStorage.setItem(PENDING_PROMPT_KEY, message);
-      router.push('/guest-chat');
-      return;
-    }
 
     setIsSubmitting(true);
 

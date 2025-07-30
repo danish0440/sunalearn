@@ -118,19 +118,22 @@ export function DashboardContent() {
       enable_context_manager?: boolean;
     },
   ) => {
+    // Check if user is authenticated, if not redirect to auth page
+    if (isGuestMode || !user) {
+      // Store the message in localStorage so it can be restored after login
+      if (message.trim()) {
+        localStorage.setItem(PENDING_PROMPT_KEY, message);
+      }
+      // Redirect to auth page with return URL
+      router.push('/auth?returnUrl=' + encodeURIComponent('/dashboard'));
+      return;
+    }
+
     if (
       (!message.trim() && !chatInputRef.current?.getPendingFiles().length) ||
       isSubmitting
     )
       return;
-
-    // For guest mode, create a simple local chat experience
-    if (isGuestMode) {
-      // Store the message locally and redirect to a guest chat page
-      localStorage.setItem(PENDING_PROMPT_KEY, message);
-      router.push('/guest-chat');
-      return;
-    }
 
     setIsSubmitting(true);
 
