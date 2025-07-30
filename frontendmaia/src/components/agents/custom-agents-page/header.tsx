@@ -12,7 +12,7 @@ export const AgentsPageHeader = () => {
           <span className="text-primary">AI Agents</span> = <span className="text-primary">AI Employees</span>
         </div>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-          Explore and create your own custom agents that combine{' '}
+          Explore and manage custom agents that combine{' '}
           <span className="text-foreground font-medium">integrations</span>,{' '}
           <span className="text-foreground font-medium">instructions</span>,{' '}
           <span className="text-foreground font-medium">knowledge</span>,{' '}

@@ -61,7 +61,7 @@ export const MyTemplatesTab = ({
           </div>
           <h3 className="text-xl font-semibold mb-3">No templates yet</h3>
           <p className="text-muted-foreground mb-8 max-w-md mx-auto">
-            Create your first secure agent template to share with the community while keeping your credentials safe.
+            Browse and install secure agent templates from the community to get started quickly.
           </p>
           <Button onClick={onSwitchToMyAgents} size="lg">
             <Bot className="h-4 w-4 mr-2" />
