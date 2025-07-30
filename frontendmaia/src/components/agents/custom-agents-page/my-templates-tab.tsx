@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Plus, Globe, AlertTriangle } from 'lucide-react';
+import { Bot, Globe, AlertTriangle } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -64,8 +64,8 @@ export const MyTemplatesTab = ({
             Create your first secure agent template to share with the community while keeping your credentials safe.
           </p>
           <Button onClick={onSwitchToMyAgents} size="lg">
-            <Plus className="h-4 w-4 mr-2" />
-            Create Your First Agent
+            <Bot className="h-4 w-4 mr-2" />
+            Browse My Agents
           </Button>
         </div>
       ) : (
@@ -92,4 +92,4 @@ export const MyTemplatesTab = ({
       )}
     </div>
   );
-}; 
+};

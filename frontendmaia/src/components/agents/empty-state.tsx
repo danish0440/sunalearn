@@ -24,7 +24,7 @@ export const EmptyState = ({ hasAgents, onClearFilters }: EmptyStateProps) => {
           </h2>
           <p className="text-muted-foreground leading-relaxed">
             {!hasAgents ? (
-              'Create your first agent to start automating tasks with custom instructions and tools. Configure custom AgentPress capabilities to fine tune agent according to your needs.'
+              'Browse the marketplace to discover and install pre-built agents, or explore existing agents to get started with automation tasks.'
             ) : (
               'No agents match your current search and filter criteria. Try adjusting your filters or search terms.'
             )}
