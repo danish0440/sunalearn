@@ -33,7 +33,7 @@ export function GuestModeCard({ onDismiss }: GuestModeCardProps) {
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.95 }}
         transition={{ duration: 0.2 }}
-        className="fixed top-6 right-6 z-40 max-w-sm"
+        className="fixed bottom-6 right-6 z-40 max-w-sm"
       >
         <Card className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20 border-blue-200 dark:border-blue-800 shadow-lg">
           <CardContent className="p-4">

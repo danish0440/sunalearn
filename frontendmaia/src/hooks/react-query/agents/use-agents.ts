@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { generateRandomAvatar } from '@/lib/utils/_avatar-generator';
 import { DEFAULT_AGENTPRESS_TOOLS } from '@/components/agents/tools';
 
-export const useAgents = (params: AgentsParams = {}) => {
+export const useAgents = (params: AgentsParams = {}, options?: any) => {
   return createQueryHook(
     agentKeys.list(params),
     () => getAgents(params),
@@ -16,7 +16,7 @@ export const useAgents = (params: AgentsParams = {}) => {
       staleTime: 5 * 60 * 1000,
       gcTime: 10 * 60 * 1000,
     }
-  )();
+  )(options);
 };
 
 export const useAgent = (agentId: string) => {
