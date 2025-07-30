@@ -26,7 +26,7 @@ interface MyAgentsTabProps {
   agents: any[];
   agentsPagination: any;
   viewMode: 'grid' | 'list';
-  onCreateAgent: () => void;
+
   onEditAgent: (agentId: string) => void;
   onDeleteAgent: (agentId: string) => void;
   onToggleDefault: (agentId: string, currentDefault: boolean) => void;
@@ -58,7 +58,7 @@ export const MyAgentsTab = ({
   agents,
   agentsPagination,
   viewMode,
-  onCreateAgent,
+
   onEditAgent,
   onDeleteAgent,
   onToggleDefault,
@@ -208,7 +208,7 @@ export const MyAgentsTab = ({
             ) : filteredAgents.length === 0 ? (
               <EmptyState
                 hasAgents={(agentsPagination?.total || 0) > 0}
-                onCreateAgent={onCreateAgent}
+        
                 onClearFilters={handleClearFilters}
               />
             ) : (
@@ -236,4 +236,4 @@ export const MyAgentsTab = ({
       </div>
     </div>
   );
-}; 
+};

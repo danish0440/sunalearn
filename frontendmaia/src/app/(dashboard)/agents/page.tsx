@@ -4,7 +4,7 @@ import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { toast } from 'sonner';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-import { useAgents, useUpdateAgent, useDeleteAgent, useOptimisticAgentUpdate, useCreateNewAgent } from '@/hooks/react-query/agents/use-agents';
+import { useAgents, useUpdateAgent, useDeleteAgent, useOptimisticAgentUpdate } from '@/hooks/react-query/agents/use-agents';
 import { useMarketplaceTemplates, useInstallTemplate, useMyTemplates, useUnpublishTemplate, usePublishTemplate, useCreateTemplate } from '@/hooks/react-query/secure-mcp/use-secure-mcp';
 import { useFeatureFlag } from '@/lib/feature-flags';
 
@@ -82,7 +82,7 @@ export default function AgentsPage() {
   const [publishDialog, setPublishDialog] = useState<PublishDialogData | null>(null);
   const [publishTags, setPublishTags] = useState<string[]>([]);
   const [publishingAgentId, setPublishingAgentId] = useState<string | null>(null);
-  const [isCreatingNewAgent, setIsCreatingNewAgent] = useState(false);
+
 
   const activeTab = useMemo(() => {
     return searchParams.get('tab') || 'my-agents';
@@ -126,7 +126,7 @@ export default function AgentsPage() {
   
   const updateAgentMutation = useUpdateAgent();
   const deleteAgentMutation = useDeleteAgent();
-  const createNewAgentMutation = useCreateNewAgent();
+
   const { optimisticallyUpdateAgent, revertOptimisticUpdate } = useOptimisticAgentUpdate();
   const installTemplateMutation = useInstallTemplate();
   const unpublishMutation = useUnpublishTemplate();
@@ -251,20 +251,7 @@ export default function AgentsPage() {
     setEditDialogOpen(true);
   };
 
-  const handleCreateNewAgent = useCallback(() => {
-    if (isCreatingNewAgent || createNewAgentMutation.isPending) {
-      return; // Prevent multiple clicks
-    }
-    
-    setIsCreatingNewAgent(true);
-    
-    createNewAgentMutation.mutate(undefined, {
-      onSettled: () => {
-        // Reset the debounce state after mutation completes (success or error)
-        setTimeout(() => setIsCreatingNewAgent(false), 1000);
-      }
-    });
-  }, [isCreatingNewAgent, createNewAgentMutation]);
+
 
   const handleInstallClick = (item: MarketplaceTemplate, e?: React.MouseEvent) => {
     if (e) {
@@ -470,7 +457,7 @@ export default function AgentsPage() {
         
         <div className="sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border/40 shadow-sm">
           <div className="container max-w-7xl mx-auto px-4 py-4">
-            <TabsNavigation activeTab={activeTab} onTabChange={handleTabChange} onCreateAgent={handleCreateNewAgent} />
+            <TabsNavigation activeTab={activeTab} onTabChange={handleTabChange} />
           </div>
         </div>
 
@@ -497,7 +484,7 @@ export default function AgentsPage() {
         }}></div>
         <div className="relative bg-gradient-to-b from-background/95 via-background/70 to-transparent">
           <div className="container mx-auto max-w-7xl px-4 py-4">
-            <TabsNavigation activeTab={activeTab} onTabChange={handleTabChange} onCreateAgent={handleCreateNewAgent} />
+            <TabsNavigation activeTab={activeTab} onTabChange={handleTabChange} />
           </div>
         </div>
       </div>
@@ -512,7 +499,7 @@ export default function AgentsPage() {
               agents={agents}
               agentsPagination={agentsPagination}
               viewMode={viewMode}
-              onCreateAgent={handleCreateNewAgent}
+
               onEditAgent={handleEditAgent}
               onDeleteAgent={handleDeleteAgent}
               onToggleDefault={handleToggleDefault}

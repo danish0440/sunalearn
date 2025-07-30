@@ -1,14 +1,13 @@
 import React from 'react';
-import { Bot, Search, Plus } from 'lucide-react';
+import { Bot, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface EmptyStateProps {
   hasAgents: boolean;
-  onCreateAgent: () => void;
   onClearFilters: () => void;
 }
 
-export const EmptyState = ({ hasAgents, onCreateAgent, onClearFilters }: EmptyStateProps) => {
+export const EmptyState = ({ hasAgents, onClearFilters }: EmptyStateProps) => {
   return (
     <div className="flex flex-col items-center justify-center py-16 px-4">
       <div className="flex flex-col items-center text-center max-w-md space-y-6">
@@ -31,16 +30,7 @@ export const EmptyState = ({ hasAgents, onCreateAgent, onClearFilters }: EmptySt
             )}
           </p>
         </div>
-        {!hasAgents ? (
-          <Button 
-            size="lg" 
-            onClick={onCreateAgent}
-            className="mt-4"
-          >
-            <Plus className="h-5 w-5" />
-            Create your first agent
-          </Button>
-        ) : (
+        {hasAgents && (
           <Button 
             variant="outline"
             onClick={onClearFilters}

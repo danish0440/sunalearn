@@ -72,6 +72,7 @@ export const AgentSelector: React.FC<AgentSelectorProps> = ({
   const agents = agentsResponse?.agents || [];
 
 
+  // Updated: removed agent creation functionality
   const allAgents = [
     ...PREDEFINED_AGENTS.map(agent => ({
       ...agent,
