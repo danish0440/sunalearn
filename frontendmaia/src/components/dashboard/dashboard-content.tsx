@@ -44,7 +44,7 @@ export function DashboardContent() {
   const [autoSubmit, setAutoSubmit] = useState(false);
   const [selectedAgentId, setSelectedAgentId] = useState<string | undefined>();
   const [initiatedThreadId, setInitiatedThreadId] = useState<string | null>(null);
-  const [showGuestBanner, setShowGuestBanner] = useState(true);
+  const [showGuestBanner, setShowGuestBanner] = useState(false);
   const [showGuestCard, setShowGuestCard] = useState(true);
   const { billingError, handleBillingError, clearBillingError } =
     useBillingError();
@@ -197,11 +197,8 @@ export function DashboardContent() {
   return (
     <>
       <ModalProviders />
-      {/* Guest Mode Banner */}
-      {isGuestMode && showGuestBanner && (
-        <GuestModeBanner onDismiss={() => setShowGuestBanner(false)} />
-      )}
-      <div className="flex flex-col h-screen w-full" style={{ paddingTop: isGuestMode && showGuestBanner ? '60px' : '0' }}>
+
+      <div className="flex flex-col h-screen w-full">
         {isMobile && (
           <div className="absolute top-4 left-4 z-10">
             <Tooltip>
